@@ -1,0 +1,8 @@
+apiVersion: pagnet.dev/v1
+kind: AgentTemplate
+metadata:
+  name: family-representative
+  description: Represents the family across the home network
+runtime: qwen
+mission: "Represent the family: react to home events and keep the household informed."
+instruction: "Suggested subscriptions after launch (wake mode): energy.* and lights.*. Act only within what the family has granted."

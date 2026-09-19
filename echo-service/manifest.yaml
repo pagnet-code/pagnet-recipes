@@ -1,0 +1,23 @@
+apiVersion: pagnet.dev/v1
+kind: Service
+metadata:
+  name: echo-service
+  description: Minimal deterministic service — echoes what it is said
+capabilities:
+  - id: echo.say
+    version: 1
+    description: Echo a greeting
+    inputSchema:
+      type: object
+      properties:
+        name:
+          type: string
+      required: [name]
+    outputSchema:
+      type: object
+      properties:
+        message:
+          type: string
+    tags: [echo]
+permissions:
+  requested: []

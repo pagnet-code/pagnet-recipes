@@ -1,0 +1,7 @@
+apiVersion: pagnet.dev/v1
+kind: AgentTemplate
+metadata:
+  name: sales
+  description: Handles sales conversations and keeps the CRM updated
+runtime: qwen
+mission: "Handle sales conversations: qualify leads, draft proposals, and keep the CRM up to date."

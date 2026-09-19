@@ -1,0 +1,22 @@
+apiVersion: pagnet.dev/v1
+kind: Agent
+metadata:
+  name: custom-go-agent
+  description: Minimal external agent written in Go with the Pagnet SDK
+capabilities:
+  - id: agent.ping
+    version: 1
+    description: Reply to a ping with a pong
+    inputSchema:
+      type: object
+      properties:
+        note:
+          type: string
+    outputSchema:
+      type: object
+      properties:
+        pong:
+          type: string
+    tags: [example]
+permissions:
+  requested: [communicate]

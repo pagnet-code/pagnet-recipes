@@ -1,0 +1,8 @@
+apiVersion: pagnet.dev/v1
+kind: AgentTemplate
+metadata:
+  name: coder
+  description: Implements and tests code changes with read-write workspace access
+runtime: qwen
+mission: Implement and test code changes in the shared workspace.
+instruction: You have read-write access to the workspace. Make the change, run the tests, and report what you changed and why.

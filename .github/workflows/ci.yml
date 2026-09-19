@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# One run per ref: a push that also opens/updates a PR runs once, not twice.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  manifests:
+    name: manifests (self-hosted)
+    # Self-hosted runner (pagnet-code org): all CI runs on the org's own
+    # infrastructure.
+    # SECURITY (public repo): self-hosted runners never execute FORK-PR
+    # (untrusted) code — same-repo PRs and pushes run, fork PRs skip.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, self-hosted-linux, owl-deploy]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache: true
+
+      - name: Validate every manifest.yaml
+        working-directory: tools/validate
+        run: |
+          go vet ./...
+          go build ./...
+          go run .
+
+  examples:
+    name: go examples (self-hosted)
+    # SECURITY (public repo): self-hosted runners never execute FORK-PR
+    # (untrusted) code — same-repo PRs and pushes run, fork PRs skip.
+    # Requires github.com/pagnet-code/pagnet v0.3.0 to be published; the
+    # first green run happens after the coordinated release push.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, self-hosted-linux, owl-deploy]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache: true
+
+      # go mod tidy generates the go.sum entries for the published SDK
+      # (none can be committed before the v0.3.0 tag exists).
+      - name: Vet and build every Go example
+        run: |
+          set -e
+          for mod in $(find . -name go.mod -not -path './tools/*' | sort); do
+            dir=$(dirname "$mod")
+            (cd "$dir" && go mod tidy && go vet ./... && go build ./...)
+          done

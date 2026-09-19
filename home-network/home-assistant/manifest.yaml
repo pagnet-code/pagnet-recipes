@@ -1,0 +1,19 @@
+apiVersion: pagnet.dev/v1
+kind: Service
+metadata:
+  name: home-assistant
+  description: Wraps Home Assistant; exposes home state and publishes energy.* and lights.* events
+capabilities:
+  - id: home.status
+    version: 1
+    description: Current summary of the home state
+    inputSchema:
+      type: object
+    outputSchema:
+      type: object
+      properties:
+        summary:
+          type: string
+    tags: [home]
+permissions:
+  requested: [event_publish]

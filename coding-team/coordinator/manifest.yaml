@@ -1,0 +1,7 @@
+apiVersion: pagnet.dev/v1
+kind: AgentTemplate
+metadata:
+  name: coordinator
+  description: Coordinates and delegates work across the coding team
+runtime: qwen
+mission: "Coordinate the team: break work into tasks, delegate to the coder and reviewer, and track progress."

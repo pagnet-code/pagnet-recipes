@@ -1,0 +1,25 @@
+apiVersion: pagnet.dev/v1
+kind: Service
+metadata:
+  name: rest-connector
+  description: Adapts an external HTTP API; provider secrets stay in the connector environment
+capabilities:
+  - id: rest.get
+    version: 1
+    description: GET a path on the external API and return status and body
+    inputSchema:
+      type: object
+      properties:
+        path:
+          type: string
+      required: [path]
+    outputSchema:
+      type: object
+      properties:
+        status:
+          type: integer
+        body:
+          type: string
+    tags: [connector, http]
+permissions:
+  requested: []

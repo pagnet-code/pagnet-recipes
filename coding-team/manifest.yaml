@@ -1,0 +1,6 @@
+apiVersion: pagnet.dev/v1
+kind: Recipe
+metadata:
+  name: coding-team
+  description: Software development starter — coder, reviewer and coordinator agent templates
+contains: [coder, reviewer, coordinator]

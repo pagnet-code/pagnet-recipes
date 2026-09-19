@@ -1,0 +1,6 @@
+apiVersion: pagnet.dev/v1
+kind: Recipe
+metadata:
+  name: home-network
+  description: Home starter — Home Assistant service plus a family representative agent template
+contains: [home-assistant, family-representative]

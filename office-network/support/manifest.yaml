@@ -1,0 +1,7 @@
+apiVersion: pagnet.dev/v1
+kind: AgentTemplate
+metadata:
+  name: support
+  description: Handles support tickets — triage, answer, escalate
+runtime: qwen
+mission: "Handle support tickets: triage, answer from the docs, and escalate what you cannot resolve."

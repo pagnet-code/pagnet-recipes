@@ -1,0 +1,6 @@
+apiVersion: pagnet.dev/v1
+kind: Recipe
+metadata:
+  name: office-network
+  description: Small office starter — sales and support agent templates, with CRM and document service references
+contains: [sales, support]

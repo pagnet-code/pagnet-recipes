@@ -1,0 +1,10 @@
+apiVersion: pagnet.dev/v1
+kind: Service
+metadata:
+  name: event-subscriber
+  description: Subscribes to test.* events and logs each delivery
+subscriptions:
+  - event: test.*
+    mode: deliver
+permissions:
+  requested: [event_subscribe]
