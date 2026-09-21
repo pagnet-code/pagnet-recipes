@@ -24,10 +24,11 @@ func main() {
 		log.Fatal(err)
 	}
 	agent := client.Agent("custom-go-agent")
-	agent.OnMessage(func(ctx context.Context, m *sdk.Message) {
-		log.Printf("message: %v", m)
+	agent.OnMessage(func(ctx context.Context, m *sdk.Message) error {
+		log.Printf("message: %s", m.TextBody())
+		return nil
 	})
-	agent.Handle("agent.ping", func(ctx context.Context, in PingInput) (PingOutput, error) {
+	agent.HandleT("agent.ping", func(ctx context.Context, in PingInput) (PingOutput, error) {
 		return PingOutput{Pong: "pong: " + in.Note}, nil
 	})
 	agent.Run(ctx)

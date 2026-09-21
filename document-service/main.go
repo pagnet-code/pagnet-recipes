@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	"github.com/pagnet-code/pagnet/sdk"
@@ -25,22 +26,24 @@ func main() {
 		log.Fatal(err)
 	}
 	svc := client.Service("document-service")
+	// Async: return (nil, sdk.ErrAsync) to defer completion; the work runs
+	// in the background and completes the invocation when it is done.
 	svc.Handle("documents.extract", func(ctx context.Context, inv *sdk.Invocation) (any, error) {
-		inv.Accept() // accept now; complete when the work is done
 		go func() {
+			_ = inv.Accept(ctx) // confirmation (the SDK already accepted on dispatch)
 			var in ExtractInput
-			if err := inv.Decode(&in); err != nil {
-				log.Printf("decode: %v", err)
+			if err := json.Unmarshal(inv.InputRaw, &in); err != nil {
+				_ = inv.CompleteError(ctx, err)
 				return
 			}
 			text, err := extract(in.URI)
 			if err != nil {
-				log.Printf("extract: %v", err)
+				_ = inv.CompleteError(ctx, err)
 				return
 			}
-			inv.Complete(ctx, ExtractOutput{Text: text})
+			_ = inv.Complete(ctx, ExtractOutput{Text: text})
 		}()
-		return nil, nil
+		return nil, sdk.ErrAsync
 	})
 	svc.Serve(ctx)
 }

@@ -24,7 +24,7 @@ func main() {
 		log.Fatal(err)
 	}
 	svc := client.Service("echo-service")
-	svc.Handle("echo.say", func(ctx context.Context, in SayInput) (SayOutput, error) {
+	svc.HandleT("echo.say", func(ctx context.Context, in SayInput) (SayOutput, error) {
 		return SayOutput{Message: "hello " + in.Name}, nil
 	})
 	svc.Serve(ctx)

@@ -17,7 +17,7 @@ func main() {
 	}
 	svc := client.Service("event-subscriber")
 	svc.OnEvent("test.*", func(ctx context.Context, e *sdk.Event) error {
-		log.Printf("event: %v", e)
+		log.Printf("event %s type=%s network=%s payload=%s", e.ID, e.Type, e.NetworkID, e.Payload)
 		return nil // nil acks the delivery
 	})
 	svc.Serve(ctx)

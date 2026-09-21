@@ -30,7 +30,7 @@ func main() {
 		log.Fatal(err)
 	}
 	svc := client.Service("rest-connector")
-	svc.Handle("rest.get", func(ctx context.Context, in GetInput) (GetOutput, error) {
+	svc.HandleT("rest.get", func(ctx context.Context, in GetInput) (GetOutput, error) {
 		return doGet(ctx, in.Path)
 	})
 	svc.Serve(ctx)
