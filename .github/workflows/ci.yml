@@ -11,17 +11,18 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   manifests:
-    name: manifests (self-hosted)
-    # Self-hosted runner (pagnet-code org): all CI runs on the org's own
-    # infrastructure.
-    # SECURITY (public repo): self-hosted runners never execute FORK-PR
-    # (untrusted) code — same-repo PRs and pushes run, fork PRs skip.
+    name: manifests
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, self-hosted-linux, owl-deploy]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-go@v5
         with:
@@ -36,15 +37,15 @@ jobs:
           go run .
 
   examples:
-    name: go examples (self-hosted)
-    # SECURITY (public repo): self-hosted runners never execute FORK-PR
-    # (untrusted) code — same-repo PRs and pushes run, fork PRs skip.
+    name: go examples
     # Requires github.com/pagnet-code/pagnet v0.3.0 to be published; the
     # first green run happens after the coordinated release push.
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, self-hosted-linux, owl-deploy]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-go@v5
         with:
